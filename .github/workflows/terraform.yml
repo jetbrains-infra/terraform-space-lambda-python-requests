@@ -37,12 +37,16 @@ jobs:
         with:
           tflint_version: latest
 
-      - name: Run TFLint
+      - name: Terraform Lint
         id: lint
         run: |
           tflint --version
           tflint --init
           tflint -f compact
+
+      - name: Terraform Security
+        id: tfsec
+        uses: aquasecurity/tfsec-action@v1.0.2
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
@@ -55,6 +59,7 @@ jobs:
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
             #### Terraform Linter 🔎\`${{ steps.lint.outcome }}\`
+            #### Terraform Security 👮\`${{ steps.tfsec.outcome }}\`
             *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
