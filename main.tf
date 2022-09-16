@@ -1,6 +1,6 @@
 data "archive_file" "this" {
   source_dir       = "${path.module}/source/"
-  output_path      = "${path.module}/${var.name}.zip"
+  output_path      = "${var.name}.zip"
   output_file_mode = "0666"
   type             = "zip"
 }
